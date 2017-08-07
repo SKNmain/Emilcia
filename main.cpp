@@ -90,7 +90,7 @@ class SDL {
 			return &event;
 		}
 
-		void ScreenUpdate() {
+		void screenUpdate() {
 			SDL_SetRenderDrawColor(render, 255, 0, 0, 255);
 
 			fpsTimer = SDL_GetTicks();
@@ -114,85 +114,16 @@ class SDL {
 int main(int argc, char** argv) {
 	SDL& sdl = SDL::init();
 
-
-	const Uint8* state;
-	SDL_Rect srcrect;
-	srcrect.x = 0;
-	srcrect.y = 0;
-	srcrect.w = 5;
-	srcrect.h = 5;
-	SDL_Rect dstrects[5];
-	SDL_Rect srcrects[5];
-	int i = 0;
-	int j = 0;
-	for(i = 0; i < 5; ++i) {
-		dstrects[i].x = i * 100;
-		dstrects[i].y = 0;
-		dstrects[i].w = 100;
-		dstrects[i].h = 100;
-		srcrects[i].x = 0;
-		srcrects[i].y = 0;
-		srcrects[i].w = 5;
-		srcrects[i].h = 5;
-	}
-	SDL_Rect dstrect;
-	dstrect.x = 0;
-	dstrect.y = 0;
-	dstrect.w = 100;
-	dstrect.h = 100;
-
-	
-	SDL_SetRenderDrawColor(sdl.render, 255, 0, 0, 255);
-
-	SDL_Surface* surface = SDL_LoadBMP("test.bmp");
-	if(surface == NULL) {
-		printf("%s\n", SDL_GetError());
-		return 1;
-	}
-	SDL_Texture* texture = SDL_CreateTextureFromSurface(sdl.render, surface);
-	SDL_FreeSurface(surface);
-
-	int	timer = SDL_GetTicks();
-	
 	for(SDL_Event* event = sdl.eventUpdate(); event->type != SDL_QUIT; sdl.eventUpdate()) {
-		//Wyswietlanie ekranu w ~60fps
-		if (SDL_GetTicks() - timer > 17) {
-			SDL_RenderClear(sdl.render);
-			for(i = 0; i < 5; ++i) {
-				SDL_RenderCopy(sdl.render, texture, &srcrects[i], &dstrects[i]);
-			}
-			SDL_RenderPresent(sdl.render);
-			timer = SDL_GetTicks();
-			i = 0;
-		}
+		
 		//Event handling
 		switch(event->type) {
 			case(SDL_MOUSEMOTION): {
-				//event.motion.x
-				//event.motion.y
-				//SDL_SetRenderDrawColor(render,
-				//	int((float(event.motion.x) / 640) * 255),
-				//	int((float(event.motion.y) / 480) * 255),
-				//	0,
-				//	255
-				//);
+
 				break;
 			}
 			case(SDL_KEYDOWN): {
-				if(event->key.keysym.scancode >= 4 && event->key.keysym.scancode <= 29) {
-					if(event->key.keysym.scancode <= 18) {
-						srcrects[j].x = ((event->key.keysym.scancode - 4) * 5) + 5;
-						srcrects[j].y = 20;
-					}
-					if(event->key.keysym.scancode > 18) {
-						srcrects[j].x = ((event->key.keysym.scancode - 4 - 18) * 5) + 15;
-						srcrects[j].y = 25;
-					}
-					j++;
-				}
-				if(j >= 5) {
-					j = 0;
-				}
+
 				break;
 			}
 			default: {
