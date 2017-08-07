@@ -5,3 +5,11 @@
 	<cstdlib>
 	<SDL2/SDL.h>
 
+1502140591 source:f:\projects\repo\emilcia\main.cpp
+	<iostream>
+	<stdio.h>
+	<cstdlib>
+	<map>
+	<string>
+	<SDL2/SDL.h>
+
