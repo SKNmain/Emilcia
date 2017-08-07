@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1502126502 source:c:\users\gorta\desktop\projekty\emilcia\emilcia\main.cpp
+	<iostream>
+	<stdio.h>
+	<cstdlib>
+	<SDL2/SDL.h>
+
