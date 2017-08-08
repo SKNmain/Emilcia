@@ -15,7 +15,7 @@ class Image {
 		SDL_Texture*	tex = nullptr;
 		SDL_Rect		src;
 		SDL_Rect		dst;
-
+		SDL_Point		size;
 		Image() {
 			src.x = 0; src.y = 0; src.w = 0; src.h = 0;
 			dst.x = 0; dst.y = 0; dst.w = 0; dst.h = 0;
@@ -120,17 +120,16 @@ class SDL {
 				return false;
 			}
 			Image* newImage = new Image;
+			newImage->size.x = newSurface->w;
+			newImage->size.y = newSurface->h;
 			newImage->tex = SDL_CreateTextureFromSurface(render, newSurface);
 			if (newImage->tex == nullptr) {
 				delete Image;
 				return false;
 			}
 			gfx[fileName] = newImage;
-			//gfx.insert(pair<string, Image*>(fileName, newImage));
 			SDL_FreeSurface(newSurface);
-			//SDL_Surface* SDL_LoadBMP(const char* file)
-			//SDL_Texture* SDL_CreateTextureFromSurface(SDL_Renderer* renderer, SDL_Surface*  surface)
-			//void SDL_FreeSurface(SDL_Surface* surface)
+			return true;
 		}
 
 };
