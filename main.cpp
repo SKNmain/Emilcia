@@ -11,16 +11,30 @@
 using namespace std;
 
 class Image {
+	private:
+		Image() {}
 	public:
 		SDL_Texture*	tex = nullptr;
 		SDL_Rect		src;
 		SDL_Rect		dst;
-		SDL_Point		size;
-		Image() {
-			src.x = 0; src.y = 0; src.w = 0; src.h = 0;
-			dst.x = 0; dst.y = 0; dst.w = 0; dst.h = 0;
+
+		Image(int width, int height) {
+			src.x = 0; src.y = 0; src.w = width; src.h = height;
+			dst.x = 0; dst.y = 0; dst.w = width; dst.h = height;
 		};
-		
+
+		void setClip(SDL_Point clipPos, SDL_Point clipSize) {
+			src.x = clipPos.x;
+			src.y = clipPos.y;
+			dst.w = src.w = clipSize.x;
+			dst.h = src.h = clipSize.y;
+		}
+
+		void setPos(int x, int y) {
+			dst.x = x;
+			dst.y = y;
+		}
+
 		~Image() {
 			if (tex != nullptr) {
 				SDL_DestroyTexture(tex);
@@ -127,9 +141,7 @@ class SDL {
 			if (newSurface == nullptr) {
 				return false;
 			}
-			Image* newImage = new Image;
-			newImage->size.x = newSurface->w;
-			newImage->size.y = newSurface->h;
+			Image* newImage = new Image(newSurface->w, newSurface->h);
 			newImage->tex = SDL_CreateTextureFromSurface(render, newSurface);
 			if (newImage->tex == nullptr) {
 				delete newImage;
