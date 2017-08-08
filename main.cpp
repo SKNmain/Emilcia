@@ -71,7 +71,7 @@ class SDL {
 			for (auto it = gfx.begin(); it != gfx.end(); ++it) {
 				delete it->second;
 			}
-			gfx.clear()
+			gfx.clear();
 			SDL_DestroyRenderer(render);
 			SDL_DestroyWindow(window);
 			SDL_Quit();
@@ -107,7 +107,7 @@ class SDL {
 				SDL_RenderClear(render);
 
 				for (auto it = gfx.begin(); it != gfx.end(); ++it) {
-					SDL_RenderCopy(render, it->second->tex, (const SDL_Rect*)it->second->src, (const SDL_Rect*)it->second->dst);
+					SDL_RenderCopy(render, it->second->tex, (const SDL_Rect*)&it->second->src, (const SDL_Rect*)&it->second->dst);
 				}	
 
 				SDL_RenderPresent(render);
