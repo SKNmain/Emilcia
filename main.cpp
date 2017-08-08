@@ -109,6 +109,25 @@ class SDL {
 			fps =  1 / newFPS;
 		}
 
+		void loadBMP(string fileName) {
+			SDL_Surface* newSurface = SDL_LoadBMP( (const char*)fileName.c_str() );
+			if(newSurface == nullptr) {
+				showError();
+				return;
+			}
+			Image* newImage = new Image;
+			newImage.tex = SDL_CreateTextureFromSurface(render, newSurface);
+			if(newImage.tex == nullptr) {
+				showError();
+				return;
+			}
+			gfx.push_back(fileName, newImage);
+
+			//SDL_Surface* SDL_LoadBMP(const char* file)
+			//SDL_Texture* SDL_CreateTextureFromSurface(SDL_Renderer* renderer, SDL_Surface*  surface)
+			//void SDL_FreeSurface(SDL_Surface* surface)
+		}
+
 };
 
 int main(int argc, char** argv) {
