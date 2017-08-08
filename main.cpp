@@ -61,9 +61,17 @@ class SDL {
 				isError = true;
 				return;
 			}
+
+			//pobranie tickow
+			fpsTimer = SDL_GetTicks();
+
 		}
 
 		~SDL() {
+			for (auto it = gfx.begin(); it != gfx.end(); ++it) {
+				delete it->second;
+			}
+			gfx.clear()
 			SDL_DestroyRenderer(render);
 			SDL_DestroyWindow(window);
 			SDL_Quit();
@@ -95,12 +103,12 @@ class SDL {
 		void screenUpdate() {
 			SDL_SetRenderDrawColor(render, 255, 0, 0, 255);
 
-			fpsTimer = SDL_GetTicks();
-
 			if (SDL_GetTicks() - fpsTimer > fps) {
 				SDL_RenderClear(render);
 
-
+				for (auto it = gfx.begin(); it != gfx.end(); ++it) {
+					SDL_RenderCopy(render, it->second->tex, (const SDL_Rect*)it->second->src, (const SDL_Rect*)it->second->dst);
+				}	
 
 				SDL_RenderPresent(render);
 				fpsTimer = SDL_GetTicks();
