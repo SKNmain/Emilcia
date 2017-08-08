@@ -116,12 +116,12 @@ class SDL {
 				return;
 			}
 			Image* newImage = new Image;
-			newImage.tex = SDL_CreateTextureFromSurface(render, newSurface);
-			if(newImage.tex == nullptr) {
+			newImage->tex = SDL_CreateTextureFromSurface(render, newSurface);
+			if(newImage->tex == nullptr) {
 				showError();
 				return;
 			}
-			gfx.push_back(fileName, newImage);
+			gfx.insert(pair<string, Image*>(fileName, newImage));
 
 			//SDL_Surface* SDL_LoadBMP(const char* file)
 			//SDL_Texture* SDL_CreateTextureFromSurface(SDL_Renderer* renderer, SDL_Surface*  surface)
