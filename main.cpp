@@ -124,7 +124,7 @@ class SDL {
 			newImage->size.y = newSurface->h;
 			newImage->tex = SDL_CreateTextureFromSurface(render, newSurface);
 			if (newImage->tex == nullptr) {
-				delete Image;
+				delete newImage;
 				return false;
 			}
 			gfx[fileName] = newImage;
