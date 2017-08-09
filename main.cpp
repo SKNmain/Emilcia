@@ -130,7 +130,7 @@ class SDL {
 		}
 
 		void setFPS(unsigned int newFPS) {
-			fps =  1 / newFPS;
+			fps =  1.0 / newFPS;
 		}
 
 		bool loadBMP(string fileName) {
@@ -152,13 +152,29 @@ class SDL {
 			return true;
 		}
 
+		Image* accesImage(string imageName) {
+			if (gfx.find(imageName) == gfx.end()) {
+				return nullptr;
+			} else {
+				return gfx[imageName];
+			}
+		}
+
 };
 
 int main(int argc, char** argv) {
 	SDL& sdl = SDL::init();
-
+	sdl.setFPS(60);
+	if (!sdl.loadBMP("test.bmp")) {
+		sdl.showError();
+	}
+	if (!sdl.loadBMP("test2.bmp")) {
+		sdl.showError();
+	} else {
+		sdl.accesImage("test2.bmp")->setPos(sdl.accesImage("test.bmp")->src.w, sdl.accesImage("test.bmp")->src.h);
+	}
 	for(SDL_Event* event = sdl.eventUpdate(); event->type != SDL_QUIT; sdl.eventUpdate()) {
-		
+		sdl.screenUpdate();
 		//Event handling
 		switch(event->type) {
 			case(SDL_MOUSEMOTION): {
