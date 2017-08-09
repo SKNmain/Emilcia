@@ -12,6 +12,7 @@ int main(int argc, char** argv) {
 	if (!sdl.loadBMP("test.bmp")) {
 		sdl.showError();
 	}
+	sdl.accesImage("test.bmp")->visible = false;
 	if (!sdl.loadBMP("test2.bmp")) {
 		sdl.showError();
 	} else {

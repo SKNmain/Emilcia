@@ -9,6 +9,7 @@
 
 using namespace std;
 
+
 class Image {
 	private:
 		Image() {}
@@ -16,11 +17,15 @@ class Image {
 		SDL_Texture*	tex = nullptr;
 		SDL_Rect		src;
 		SDL_Rect		dst;
+		bool 			visible;
 
 		Image(int width, int height) {
 			src.x = 0; src.y = 0; src.w = width; src.h = height;
 			dst.x = 0; dst.y = 0; dst.w = width; dst.h = height;
+			visible = true;
 		};
+
+		// ustawienie wycinka zrodlowej mapy
 
 		void setClip(SDL_Point clipPos, SDL_Point clipSize) {
 			src.x = clipPos.x;
@@ -41,6 +46,7 @@ class Image {
 		};
 };
 
+
 class SDL {
 
 	private:
@@ -50,13 +56,16 @@ class SDL {
 		unsigned int				fpsTimer;
 
 		SDL() {
-			//Inicjalizacja SDL'a
+
+			// Inicjalizacja SDL'a
+
 			if (SDL_Init(SDL_INIT_EVERYTHING)) {
 				isError = true;
 				return;
 			}
 
-			//inicjalizacja okna
+			// inicjalizacja okna
+
 			window = SDL_CreateWindow(
 				"Emilcia",
 				SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
@@ -68,14 +77,16 @@ class SDL {
 				return;
 			}
 
-			//inicjalizacja renderera
+			// inicjalizacja renderera
+
 			render = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 			if (render == nullptr) {
 				isError = true;
 				return;
 			}
 
-			//pobranie tickow
+			// pobranie tickow
+
 			fpsTimer = SDL_GetTicks();
 
 		}
@@ -91,9 +102,6 @@ class SDL {
 		}
 
 		
-
-
-
 	public:
 		static SDL& init() {
 			static SDL sdl;
@@ -113,14 +121,21 @@ class SDL {
 			return &event;
 		}
 
+		// odswiezanie
+
 		void screenUpdate() {
 			SDL_SetRenderDrawColor(render, 255, 0, 0, 255);
 
 			if (SDL_GetTicks() - fpsTimer > fps) {
 				SDL_RenderClear(render);
 
+				// petla iterujaca po obrazach
+
 				for (auto it = gfx.begin(); it != gfx.end(); ++it) {
-					SDL_RenderCopy(render, it->second->tex, (const SDL_Rect*)&it->second->src, (const SDL_Rect*)&it->second->dst);
+					if (it->second->visible) {
+						SDL_RenderCopy(render, it->second->tex, (const SDL_Rect*)&it->second->src, (const SDL_Rect*)&it->second->dst);
+					}
+					
 				}	
 
 				SDL_RenderPresent(render);
@@ -132,14 +147,22 @@ class SDL {
 			fps =  1.0 / newFPS;
 		}
 
+		// wczytywanie map bitowych
+
 		bool loadBMP(string fileName) {
 			if (gfx.find(fileName) != gfx.end()) {
 				return true;
 			}
+
+			// zapisywanie do powierzchni
+
 			SDL_Surface* newSurface = SDL_LoadBMP(fileName.c_str());
 			if (newSurface == nullptr) {
 				return false;
 			}
+
+			// zapisywanie do obiektu klasy image, do tekstury
+
 			Image* newImage = new Image(newSurface->w, newSurface->h);
 			newImage->tex = SDL_CreateTextureFromSurface(render, newSurface);
 			if (newImage->tex == nullptr) {
@@ -151,6 +174,8 @@ class SDL {
 			return true;
 		}
 
+		// JEDYNY SPOSOB ZEBY DOSTAC SIE DO OBRAZOW ! ! !
+
 		Image* accesImage(string imageName) {
 			if (gfx.find(imageName) == gfx.end()) {
 				return nullptr;
@@ -159,4 +184,22 @@ class SDL {
 			}
 		}
 
+};
+
+class Button {
+	private:
+		Button() {}
+
+	public:
+		string imageName;
+		Image* imagePointer;
+		Button(string imageName, Image* imagePointer) {
+			SDL& sdl = SDL::init();
+			imagePointer = sdl.accesImage(imageName);
+		}
+
+		~Button() {
+			imagePointer = nullptr;
+			imageName.clear();
+		}
 };
