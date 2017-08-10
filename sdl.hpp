@@ -18,20 +18,22 @@ class Image {
 		SDL_Rect		src;
 		SDL_Rect		dst;
 		bool 			visible;
+		int 			id;
 
-		Image(int width, int height) {
+		Image(int width, int height, int objectCounter) {
 			src.x = 0; src.y = 0; src.w = width; src.h = height;
 			dst.x = 0; dst.y = 0; dst.w = width; dst.h = height;
 			visible = true;
+			id = objectCounter;
 		};
 
 		// ustawienie wycinka zrodlowej mapy
 
-		void setClip(SDL_Point clipPos, SDL_Point clipSize) {
-			src.x = clipPos.x;
-			src.y = clipPos.y;
-			dst.w = src.w = clipSize.x;
-			dst.h = src.h = clipSize.y;
+		void setClip(int x1, int y1, int x2, int y2) {
+			src.x = x1;
+			src.y = y1;
+			dst.w = src.w = x2;
+			dst.h = src.h = y2;
 		}
 
 		void setPos(int x, int y) {
@@ -47,15 +49,60 @@ class Image {
 };
 
 
+class Button {
+	private:
+		Button() {}
+
+	public:
+		int 		id;
+		bool 		isPressed;
+		SDL_Rect 	dst;
+		string 		imageName;
+		Image* 		imagePointer;
+
+
+		Button(string imageNme, Image* imagePtr, int width, int height, int objectCounter) {			
+			imagePointer = imagePtr;
+			imageName = imageNme;
+			dst.x = 0; dst.y = 0; dst.w = width; dst.h = height;
+		}
+
+		bool setImageHandler() {
+			if(imagePointer == nullptr) {
+				return false;
+			}
+			imagePointer->dst.x = dst.x;
+			imagePointer->dst.y = dst.y;
+			return true;
+		}
+
+		void setPos(int x, int y) {
+			dst.x = x;
+			dst.y = y;
+		}
+
+		~Button() {
+			imagePointer = nullptr;
+			imageName.clear();
+		}
+};
+
 class SDL {
 
 	private:
 		SDL_Event					event;
 		map<string, Image*>			gfx;
+		map<string, Button*>		btn;
 		unsigned short				fps;
 		unsigned int				fpsTimer;
+		int							objectCounter;
 
 		SDL() {
+
+
+			// wyzerowanie obiektow 
+
+			objectCounter = 0;
 
 			// Inicjalizacja SDL'a
 
@@ -89,13 +136,18 @@ class SDL {
 
 			fpsTimer = SDL_GetTicks();
 
+
 		}
 
 		~SDL() {
 			for (auto it = gfx.begin(); it != gfx.end(); ++it) {
 				delete it->second;
 			}
+			for (auto it = btn.begin(); it != btn.end(); ++it) {
+				delete it->second;
+			}
 			gfx.clear();
+			btn.clear();
 			SDL_DestroyRenderer(render);
 			SDL_DestroyWindow(window);
 			SDL_Quit();
@@ -150,6 +202,9 @@ class SDL {
 		// wczytywanie map bitowych
 
 		bool loadBMP(string fileName) {
+
+			// sprawdzam czy juz istnieje
+
 			if (gfx.find(fileName) != gfx.end()) {
 				return true;
 			}
@@ -163,15 +218,24 @@ class SDL {
 
 			// zapisywanie do obiektu klasy image, do tekstury
 
-			Image* newImage = new Image(newSurface->w, newSurface->h);
+			Image* newImage = new Image(newSurface->w, newSurface->h, objectCounter);
 			newImage->tex = SDL_CreateTextureFromSurface(render, newSurface);
 			if (newImage->tex == nullptr) {
 				delete newImage;
 				return false;
 			}
 			gfx[fileName] = newImage;
+			objectCounter += 1;
 			SDL_FreeSurface(newSurface);
 			return true;
+		}
+
+		bool makeButton(string buttonName, Image* imagePtr) {
+			if (btn.find(buttonName) != btn.end()) {
+				return true;
+			}
+			Button* newBtn = new Button(imagePtr->)
+
 		}
 
 		// JEDYNY SPOSOB ZEBY DOSTAC SIE DO OBRAZOW ! ! !
@@ -184,31 +248,4 @@ class SDL {
 			}
 		}
 
-};
-
-class Button {
-	private:
-		Button() {}
-
-	public:
-		bool isPressed;
-		SDL_Rect position;
-
-		string imageName;
-		Image* imagePointer;
-
-
-		Button(string imageName, Image* imagePointer, int width, int height) {
-			SDL& sdl = SDL::init();
-			imagePointer = sdl.accesImage(imageName);
-			position.x = 0; position.y = 0; position.w = width; position.h = height;
-		}
-		void setImageHandler() {
-			imagePointer->dst.x = position.x;
-			imagePointer->dst.y = position.y;
-		}
-		~Button() {
-			imagePointer = nullptr;
-			imageName.clear();
-		}
 };

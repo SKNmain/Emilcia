@@ -11,12 +11,15 @@ int main(int argc, char** argv) {
 	sdl.setFPS(60);
 	if (!sdl.loadBMP("test.bmp")) {
 		sdl.showError();
+	} else {
+		sdl.accesImage("test.bmp")->setPos(256, 256);
 	}
-	sdl.accesImage("test.bmp")->visible = false;
+
 	if (!sdl.loadBMP("test2.bmp")) {
 		sdl.showError();
 	} else {
-		sdl.accesImage("test2.bmp")->setPos(sdl.accesImage("test.bmp")->src.w, sdl.accesImage("test.bmp")->src.h);
+		sdl.accesImage("test2.bmp")->setClip(0, 0, 256, 256);
+		sdl.accesImage("test2.bmp")->setPos(256 + 512, 256);
 	}
 	for(SDL_Event* event = sdl.eventUpdate(); event->type != SDL_QUIT; sdl.eventUpdate()) {
 		sdl.screenUpdate();
@@ -37,5 +40,6 @@ int main(int argc, char** argv) {
 			
 		}
 	}
+	delete sdl;
 	return 0;
 }
