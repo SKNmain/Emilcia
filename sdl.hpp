@@ -236,6 +236,8 @@ class SDL {
 			}
 			Button* newBtn = new Button(imagePtr->)
 
+			// DOKONCZYC ! ! !
+
 		}
 
 		// JEDYNY SPOSOB ZEBY DOSTAC SIE DO OBRAZOW ! ! !
