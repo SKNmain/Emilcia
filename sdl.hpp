@@ -191,13 +191,22 @@ class Button {
 		Button() {}
 
 	public:
+		bool isPressed;
+		SDL_Rect position;
+
 		string imageName;
 		Image* imagePointer;
-		Button(string imageName, Image* imagePointer) {
+
+
+		Button(string imageName, Image* imagePointer, int width, int height) {
 			SDL& sdl = SDL::init();
 			imagePointer = sdl.accesImage(imageName);
+			position.x = 0; position.y = 0; position.w = width; position.h = height;
 		}
-
+		void setImageHandler() {
+			imagePointer->dst.x = position.x;
+			imagePointer->dst.y = position.y;
+		}
 		~Button() {
 			imagePointer = nullptr;
 			imageName.clear();
