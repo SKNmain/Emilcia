@@ -62,20 +62,18 @@ class Button {
 			imagePointer = imagePtr;
 			dst.x = 0; dst.y = 0; dst.w = 0; dst.h = 0;
 		}
-/*
-//Niepotrzebne bo przycisk ma własne wymiary i nie wpływa na obrazek
-		bool setImageHandler() {
-			if (imagePointer == nullptr) {
-				return false;
-			}
-			imagePointer->dst.x = dst.x;
-			imagePointer->dst.y = dst.y;
-			return true;
-		}
-*/
+
 		void setPos(int x, int y) {
 			dst.x = x;
 			dst.y = y;
+		}
+
+		bool setPosLikeImage() {
+			if (imagePointer == nullptr) {
+				return false;
+			}
+			setPos(imagePointer->dst.x, imagePointer->dst.x);
+			return true;
 		}
 
 		bool fitSizeToImage() {
@@ -115,13 +113,15 @@ class SDL {
 			}
 
 			// inicjalizacja okna
-
+			//-------------------------------------------------
 			window = SDL_CreateWindow(
 				"Emilcia",
 				SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
 				1024, 768,
 				SDL_WINDOW_SHOWN | SDL_WINDOW_INPUT_FOCUS | SDL_WINDOW_MOUSE_FOCUS
 			);
+			//-------------------------------------------------
+
 			if (window == nullptr) {
 				isError = true;
 				return;
@@ -197,16 +197,16 @@ class SDL {
 				}
 
 				//Petla iterujaca po przyciskach
-				for (auto it = btn.begin(); it != btn.end(); ++it) {
-					if (btn->second) {
-						SDL_RenderCopy(
-							render,
-							it->second->getImage()->text,
-							(const SDL_Rect*)&it->second->getImage()->src,
-							(const SDL_Rect*)&it->second->dst
-						);
-					}
-				}
+				//for (auto it = btn.begin(); it != btn.end(); ++it) {
+				//	if (it->second) {
+				//		SDL_RenderCopy(
+				//			render,
+				//			it->second->getImage()->tex,
+				//			(const SDL_Rect*)&it->second->getImage()->src,
+				//			(const SDL_Rect*)&it->second->dst
+				//		);
+				//	}
+				//}
 
 				SDL_RenderPresent(render);
 				fpsTimer = SDL_GetTicks();
@@ -272,4 +272,13 @@ class SDL {
 			}
 		}
 
+		Button* accesButton(string btnName) {
+			if (btn.find(btnName) == btn.end()) {
+				return nullptr;
+			} else {
+				return btn[btnName];
+			}
+		}
+
+		
 };
