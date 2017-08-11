@@ -40,6 +40,5 @@ int main(int argc, char** argv) {
 			
 		}
 	}
-	delete sdl;
 	return 0;
 }

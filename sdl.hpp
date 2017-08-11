@@ -18,13 +18,11 @@ class Image {
 		SDL_Rect		src;
 		SDL_Rect		dst;
 		bool 			visible;
-		int 			id;
 
-		Image(int width, int height, int objectCounter) {
+		Image(int width, int height) {
 			src.x = 0; src.y = 0; src.w = width; src.h = height;
 			dst.x = 0; dst.y = 0; dst.w = width; dst.h = height;
 			visible = true;
-			id = objectCounter;
 		};
 
 		// ustawienie wycinka zrodlowej mapy
@@ -41,6 +39,7 @@ class Image {
 			dst.y = y;
 		}
 
+
 		~Image() {
 			if (tex != nullptr) {
 				SDL_DestroyTexture(tex);
@@ -52,23 +51,22 @@ class Image {
 class Button {
 	private:
 		Button() {}
-
+		Image* 		imagePointer;
 	public:
-		int 		id;
 		bool 		isPressed;
 		SDL_Rect 	dst;
 		string 		imageName;
-		Image* 		imagePointer;
+		
 
 
-		Button(string imageNme, Image* imagePtr, int width, int height, int objectCounter) {			
+		Button(string imgName, Image* imagePtr) {			
 			imagePointer = imagePtr;
-			imageName = imageNme;
-			dst.x = 0; dst.y = 0; dst.w = width; dst.h = height;
+			imageName = imgName;
+			dst.x = 0; dst.y = 0; dst.w = 0; dst.h = 0;
 		}
 
 		bool setImageHandler() {
-			if(imagePointer == nullptr) {
+			if (imagePointer == nullptr) {
 				return false;
 			}
 			imagePointer->dst.x = dst.x;
@@ -79,6 +77,15 @@ class Button {
 		void setPos(int x, int y) {
 			dst.x = x;
 			dst.y = y;
+		}
+
+		bool fitSizeToImage() {
+			if (imagePointer == nullptr) {
+				return false;
+			}
+			dst.w = imagePointer->src.w;
+			dst.h = imagePointer->src.h;
+			return true;
 		}
 
 		~Button() {
@@ -95,14 +102,8 @@ class SDL {
 		map<string, Button*>		btn;
 		unsigned short				fps;
 		unsigned int				fpsTimer;
-		int							objectCounter;
 
 		SDL() {
-
-
-			// wyzerowanie obiektow 
-
-			objectCounter = 0;
 
 			// Inicjalizacja SDL'a
 
@@ -218,26 +219,27 @@ class SDL {
 
 			// zapisywanie do obiektu klasy image, do tekstury
 
-			Image* newImage = new Image(newSurface->w, newSurface->h, objectCounter);
+			Image* newImage = new Image(newSurface->w, newSurface->h);
 			newImage->tex = SDL_CreateTextureFromSurface(render, newSurface);
 			if (newImage->tex == nullptr) {
 				delete newImage;
 				return false;
 			}
 			gfx[fileName] = newImage;
-			objectCounter += 1;
 			SDL_FreeSurface(newSurface);
 			return true;
 		}
 
-		bool makeButton(string buttonName, Image* imagePtr) {
+		bool makeNewButton(string buttonName, string imgName, Image* imgPtr) {
+
+			// sprawdzam czy juz istnieje
+
 			if (btn.find(buttonName) != btn.end()) {
-				return true;
+				return false;
 			}
-			Button* newBtn = new Button(imagePtr->)
-
-			// DOKONCZYC ! ! !
-
+			Button* newBtn = new Button(imgName, imgPtr);
+			btn[buttonName] = newBtn;
+			return true;
 		}
 
 		// JEDYNY SPOSOB ZEBY DOSTAC SIE DO OBRAZOW ! ! !
