@@ -10,29 +10,29 @@ int main(int argc, char** argv) {
 	int margin = 16;
 	SDL& sdl = SDL::init();
 	sdl.setFPS(60);
-	if (!sdl.loadBMP("minus.bmp")) {
+	if (!sdl.loadBMP("images\\minus.bmp")) {
 		sdl.showError();
 	} else {
-		sdl.accesImage("minus.bmp")->setPos(margin, 224);
-		sdl.makeNewButton("minus", "minus.bmp");
+		sdl.accesImage("images\\minus.bmp")->setPos(margin, 224);
+		sdl.makeNewButton("minus", "images\\minus.bmp");
 		sdl.accesButton("minus")->setPosLikeImage();
 		sdl.accesButton("minus")->fitSizeToImage();
 	}
 
-	if (!sdl.loadBMP("lupa.bmp")) {
+	if (!sdl.loadBMP("images\\lupa.bmp")) {
 		sdl.showError();
 	} else {
-		sdl.accesImage("lupa.bmp")->setPos(margin + 320 + margin, 224);
-		sdl.makeNewButton("lupa", "lupa.bmp");
+		sdl.accesImage("images\\lupa.bmp")->setPos(margin + 320 + margin, 224);
+		sdl.makeNewButton("lupa", "images\\lupa.bmp");
 		sdl.accesButton("lupa")->setPosLikeImage();
 		sdl.accesButton("lupa")->fitSizeToImage();
 	}
 
-	if (!sdl.loadBMP("plus.bmp")) {
+	if (!sdl.loadBMP("images\\plus.bmp")) {
 		sdl.showError();
 	} else {
-		sdl.accesImage("plus.bmp")->setPos(margin + 320 + margin + 320 + margin, 224);
-		sdl.makeNewButton("plus", "plus.bmp");
+		sdl.accesImage("images\\plus.bmp")->setPos(margin + 320 + margin + 320 + margin, 224);
+		sdl.makeNewButton("plus", "images\\plus.bmp");
 		sdl.accesButton("plus")->setPosLikeImage();
 		sdl.accesButton("plus")->fitSizeToImage();
 	}
@@ -49,7 +49,7 @@ int main(int argc, char** argv) {
 				break;
 			}
 			case(SDL_MOUSEBUTTONDOWN): {
-				
+
 				break;
 			}
 			default: {

@@ -13,13 +13,13 @@
 	<string>
 	<SDL2/SDL.h>
 
-1502495894 source:c:\users\gorta\onedrive\dokumenty\emilcia\main.cpp
+1502497575 source:c:\users\gorta\onedrive\dokumenty\emilcia\main.cpp
 	"includes.hpp"
 
 1502279973 c:\users\gorta\onedrive\dokumenty\emilcia\includes.hpp
 	"sdl.hpp"
 
-1502496081 c:\users\gorta\onedrive\dokumenty\emilcia\sdl.hpp
+1502497006 c:\users\gorta\onedrive\dokumenty\emilcia\sdl.hpp
 	<iostream>
 	<stdio.h>
 	<cstdlib>
