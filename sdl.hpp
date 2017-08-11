@@ -55,16 +55,15 @@ class Button {
 	public:
 		bool 		isPressed;
 		SDL_Rect 	dst;
-		string 		imageName;
 		
 
 
-		Button(string imgName, Image* imagePtr) {			
+		Button(Image* imagePtr) {			
 			imagePointer = imagePtr;
-			imageName = imgName;
 			dst.x = 0; dst.y = 0; dst.w = 0; dst.h = 0;
 		}
-
+/*
+//Niepotrzebne bo przycisk ma własne wymiary i nie wpływa na obrazek
 		bool setImageHandler() {
 			if (imagePointer == nullptr) {
 				return false;
@@ -73,7 +72,7 @@ class Button {
 			imagePointer->dst.y = dst.y;
 			return true;
 		}
-
+*/
 		void setPos(int x, int y) {
 			dst.x = x;
 			dst.y = y;
@@ -88,9 +87,12 @@ class Button {
 			return true;
 		}
 
+		Image* getImage() {
+			return imagePointer;
+		}
+
 		~Button() {
 			imagePointer = nullptr;
-			imageName.clear();
 		}
 };
 
@@ -182,14 +184,29 @@ class SDL {
 			if (SDL_GetTicks() - fpsTimer > fps) {
 				SDL_RenderClear(render);
 
-				// petla iterujaca po obrazach
-
+				//Petla iterujaca po obrazach
 				for (auto it = gfx.begin(); it != gfx.end(); ++it) {
 					if (it->second->visible) {
-						SDL_RenderCopy(render, it->second->tex, (const SDL_Rect*)&it->second->src, (const SDL_Rect*)&it->second->dst);
+						SDL_RenderCopy(
+							render,
+							it->second->tex,
+							(const SDL_Rect*)&it->second->src,
+							(const SDL_Rect*)&it->second->dst
+						);
 					}
-					
-				}	
+				}
+
+				//Petla iterujaca po przyciskach
+				for (auto it = btn.begin(); it != btn.end(); ++it) {
+					if (btn->second) {
+						SDL_RenderCopy(
+							render,
+							it->second->getImage()->text,
+							(const SDL_Rect*)&it->second->getImage()->src,
+							(const SDL_Rect*)&it->second->dst
+						);
+					}
+				}
 
 				SDL_RenderPresent(render);
 				fpsTimer = SDL_GetTicks();
@@ -230,14 +247,17 @@ class SDL {
 			return true;
 		}
 
-		bool makeNewButton(string buttonName, string imgName, Image* imgPtr) {
+		bool makeNewButton(string buttonName, string imgName) {
 
 			// sprawdzam czy juz istnieje
 
 			if (btn.find(buttonName) != btn.end()) {
 				return false;
 			}
-			Button* newBtn = new Button(imgName, imgPtr);
+			if (gfx.find(imgName) == gfx.end()) {
+				return false;
+			}
+			Button* newBtn = new Button(gfx[imgName]);
 			btn[buttonName] = newBtn;
 			return true;
 		}
