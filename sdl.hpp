@@ -72,7 +72,7 @@ class Button {
 			if (imagePointer == nullptr) {
 				return false;
 			}
-			setPos(imagePointer->dst.x, imagePointer->dst.x);
+			setPos(imagePointer->dst.x, imagePointer->dst.y);
 			return true;
 		}
 
@@ -197,16 +197,16 @@ class SDL {
 				}
 
 				//Petla iterujaca po przyciskach
-				//for (auto it = btn.begin(); it != btn.end(); ++it) {
-				//	if (it->second) {
-				//		SDL_RenderCopy(
-				//			render,
-				//			it->second->getImage()->tex,
-				//			(const SDL_Rect*)&it->second->getImage()->src,
-				//			(const SDL_Rect*)&it->second->dst
-				//		);
-				//	}
-				//}
+				for (auto it = btn.begin(); it != btn.end(); ++it) {
+					if (it->second) {
+						SDL_RenderCopy(
+							render,
+							it->second->getImage()->tex,
+							(const SDL_Rect*)&it->second->getImage()->src,
+							(const SDL_Rect*)&it->second->dst
+						);
+					}
+				}
 
 				SDL_RenderPresent(render);
 				fpsTimer = SDL_GetTicks();
@@ -258,6 +258,7 @@ class SDL {
 				return false;
 			}
 			Button* newBtn = new Button(gfx[imgName]);
+			gfx[imgName]->visible = false;
 			btn[buttonName] = newBtn;
 			return true;
 		}
@@ -280,5 +281,5 @@ class SDL {
 			}
 		}
 
-		
+
 };
