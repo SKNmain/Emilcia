@@ -85,6 +85,15 @@ class Button {
 			return true;
 		}
 
+		bool Pressed(int x, int y) {
+			if (x >= dst.x && x <= dst.w && y >= dst.y && y <= dst.h) {
+				isPressed = true;
+			} else {
+				isPressed = false;
+			}
+			return isPressed;
+		}
+
 		Image* getImage() {
 			return imagePointer;
 		}
@@ -178,9 +187,8 @@ class SDL {
 
 		// odswiezanie
 
-		void screenUpdate() {
+		void screenUpdate(SDL_Event* event) {
 			SDL_SetRenderDrawColor(render, 255, 0, 0, 255);
-
 			if (SDL_GetTicks() - fpsTimer > fps) {
 				SDL_RenderClear(render);
 
@@ -205,6 +213,13 @@ class SDL {
 							(const SDL_Rect*)&it->second->getImage()->src,
 							(const SDL_Rect*)&it->second->dst
 						);
+						if (event->type == SDL_MOUSEBUTTONDOWN) {
+							accesImage("images\\test.bmp")->visible = true;
+						}
+						if (event->type == SDL_MOUSEBUTTONUP) {
+							accesImage("images\\test.bmp")->visible = false;
+						}
+						
 					}
 				}
 

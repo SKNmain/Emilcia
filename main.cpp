@@ -36,8 +36,17 @@ int main(int argc, char** argv) {
 		sdl.accesButton("plus")->setPosLikeImage();
 		sdl.accesButton("plus")->fitSizeToImage();
 	}
+
+	if (!sdl.loadBMP("images\\test.bmp")) {
+		sdl.showError();
+	} else {
+		sdl.accesImage("images\\test.bmp")->setPos(500, 600);
+		sdl.makeNewButton("lupa", "images\\test.bmp");
+		//usunac pozniej
+		sdl.accesImage("images\\test.bmp")->visible = false;
+	}
 	for(SDL_Event* event = sdl.eventUpdate(); event->type != SDL_QUIT; sdl.eventUpdate()) {
-		sdl.screenUpdate();
+		sdl.screenUpdate(event);
 		//Event handling
 		switch(event->type) {
 			case(SDL_MOUSEMOTION): {
