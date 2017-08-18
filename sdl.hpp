@@ -6,102 +6,11 @@
 #include <map>
 #include <string>
 #include <SDL2/SDL.h>
-
+#include "scene.hpp"
+#include "object.hpp"
+#include "image.hpp"
+#include "button.hpp"
 using namespace std;
-
-
-class Image {
-	private:
-		Image() {}
-	public:
-		SDL_Texture*	tex = nullptr;
-		SDL_Rect		src;
-		SDL_Rect		dst;
-		bool 			visible;
-
-		Image(int width, int height) {
-			src.x = 0; src.y = 0; src.w = width; src.h = height;
-			dst.x = 0; dst.y = 0; dst.w = width; dst.h = height;
-			visible = true;
-		};
-
-		// ustawienie wycinka zrodlowej mapy
-
-		void setClip(int x1, int y1, int x2, int y2) {
-			src.x = x1;
-			src.y = y1;
-			dst.w = src.w = x2;
-			dst.h = src.h = y2;
-		}
-
-		void setPos(int x, int y) {
-			dst.x = x;
-			dst.y = y;
-		}
-
-
-		~Image() {
-			if (tex != nullptr) {
-				SDL_DestroyTexture(tex);
-			}
-		};
-};
-
-
-class Button {
-	private:
-		Button() {}
-		Image* 		imagePointer;
-	public:
-		bool 		isPressed;
-		SDL_Rect 	dst;
-		
-
-
-		Button(Image* imagePtr) {			
-			imagePointer = imagePtr;
-			dst.x = 0; dst.y = 0; dst.w = 0; dst.h = 0;
-		}
-
-		void setPos(int x, int y) {
-			dst.x = x;
-			dst.y = y;
-		}
-
-		bool setPosLikeImage() {
-			if (imagePointer == nullptr) {
-				return false;
-			}
-			setPos(imagePointer->dst.x, imagePointer->dst.y);
-			return true;
-		}
-
-		bool fitSizeToImage() {
-			if (imagePointer == nullptr) {
-				return false;
-			}
-			dst.w = imagePointer->src.w;
-			dst.h = imagePointer->src.h;
-			return true;
-		}
-
-		bool Pressed(int x, int y) {
-			if (x >= dst.x && x <= dst.w && y >= dst.y && y <= dst.h) {
-				isPressed = true;
-			} else {
-				isPressed = false;
-			}
-			return isPressed;
-		}
-
-		Image* getImage() {
-			return imagePointer;
-		}
-
-		~Button() {
-			imagePointer = nullptr;
-		}
-};
 
 class SDL {
 
@@ -109,6 +18,8 @@ class SDL {
 		SDL_Event					event;
 		map<string, Image*>			gfx;
 		map<string, Button*>		btn;
+		vector<Scene*>				scenes;
+		unsigned short 				currentScene = 0;
 		unsigned short				fps;
 		unsigned int				fpsTimer;
 
@@ -186,12 +97,11 @@ class SDL {
 		}
 
 		// odswiezanie
-
 		void screenUpdate(SDL_Event* event) {
 			SDL_SetRenderDrawColor(render, 255, 0, 0, 255);
 			if (SDL_GetTicks() - fpsTimer > fps) {
 				SDL_RenderClear(render);
-
+				/*
 				//Petla iterujaca po obrazach
 				for (auto it = gfx.begin(); it != gfx.end(); ++it) {
 					if (it->second->visible) {
@@ -222,7 +132,11 @@ class SDL {
 						
 					}
 				}
+				*/
 
+				if (currentScene < scenes.size()) {
+					scenes[currentScene].render();
+				}
 				SDL_RenderPresent(render);
 				fpsTimer = SDL_GetTicks();
 			}
@@ -233,7 +147,8 @@ class SDL {
 		}
 
 		// wczytywanie map bitowych
-
+		// przeniesione do class Image
+		/*
 		bool loadBMP(string fileName) {
 
 			// sprawdzam czy juz istnieje
@@ -242,7 +157,7 @@ class SDL {
 				return true;
 			}
 
-			// zapisywanie do powierzchni
+			
 
 			SDL_Surface* newSurface = SDL_LoadBMP(fileName.c_str());
 			if (newSurface == nullptr) {
@@ -261,7 +176,7 @@ class SDL {
 			SDL_FreeSurface(newSurface);
 			return true;
 		}
-
+		*/
 		bool makeNewButton(string buttonName, string imgName) {
 
 			// sprawdzam czy juz istnieje
