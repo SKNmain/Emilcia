@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <cstdlib>
 #include <map>
+#include <vector>
 #include <string>
 #include <SDL2/SDL.h>
 
@@ -34,8 +35,8 @@ class Object {
 			type = NONE;
 			enabled = true;
 		}
-		~Object();
-		void render(SDL_Renderer* renderer);
+		virtual ~Object();
+		virtual void render(SDL_Renderer* renderer);
 
 
 };

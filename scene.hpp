@@ -5,9 +5,12 @@
 #include <cstdlib>
 #include <map>
 #include <string>
+#include <vector>
 #include <SDL2/SDL.h>
-//#include "object.hpp"
+#include "object.hpp"
 #include "image.hpp"
+
+
 
 using namespace std;
 
@@ -28,7 +31,7 @@ class Scene {
 		
 		~Scene() {
 			renderer = nullptr;
-			for (int i = 0; i < objects.size(); ++i) {
+			for (unsigned int i = 0; i < objects.size(); ++i) {
 				delete objects[i];
 			}
 		}
@@ -40,8 +43,8 @@ class Scene {
 		}
 
 		void render() {
-			for (int i = 0; i < objects.size(); ++i) {
-				objects[i].render(renderer);
+			for (unsigned int i = 0; i < objects.size(); ++i) {
+				objects[i]->render(renderer);
 			}
 		}
 

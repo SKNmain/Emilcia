@@ -4,33 +4,28 @@
 #include <stdio.h>
 #include <cstdlib>
 #include <map>
+#include <vector>
 #include <string>
 #include <SDL2/SDL.h>
-//#include "object.hpp"
+#include "object.hpp"
 #include "image.hpp"
 
 using namespace std;
 
-enum Assigment {
-	NONE	= 0,
-	TAKE	= 1,
-	LOUPE	= 2,
-	ADD 	= 3
-};
 
 
-
-class Button : public Image{
+class Button : public Object{
 	private:
-		Assigment 	taskFlag;
 	public:
-		bool 		isPressed;
-		
+		bool			isPressed;
+		SDL_Rect		src_off;
+		SDL_Rect		src_on;
+		SDL_Texture*	tex_off;
+		SDL_Texture*	tex_on;
 
 
 		Button() {
 			type = BUTTON;
-			taskFlag = NONE;
 		}
 		/*
 		void setPos(int x, int y) {
@@ -55,9 +50,30 @@ class Button : public Image{
 			return isPressed;
 		}
 
-		void render() {
-
+		void render(SDL_Renderer* renderer) {
+			if (isPressed == true) {
+				if (tex_on == nullptr) {
+					return;
+				}
+				SDL_RenderCopy(
+					renderer,
+					tex_on,
+					&src_on,
+					&dst
+				);
+			} else {
+				if (tex_off == nullptr) {
+					return;
+				}
+				SDL_RenderCopy(
+					renderer,
+					tex_off,
+					&src_off,
+					&dst
+				);
+			}
 		}
+
 		~Button() {
 		}
 };

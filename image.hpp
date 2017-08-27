@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <cstdlib>
 #include <map>
+#include <vector>
 #include <string>
 #include <SDL2/SDL.h>
 #include "object.hpp"
@@ -15,7 +16,6 @@ class Image : public Object {
 	public:
 		SDL_Texture*	tex = nullptr;
 		SDL_Rect		src;
-		Object 			test;
 		Image() {
 			src.x = 0; src.y = 0; src.w = 0; src.h = 0;
 			dst.x = 0; dst.y = 0; dst.w = 0; dst.h = 0;

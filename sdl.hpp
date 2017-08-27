@@ -4,12 +4,13 @@
 #include <stdio.h>
 #include <cstdlib>
 #include <map>
+#include <vector>
 #include <string>
 #include <SDL2/SDL.h>
-#include "scene.hpp"
-//#include "object.hpp"
-//#include "image.hpp"
+#include "object.hpp"
+#include "image.hpp"
 #include "button.hpp"
+#include "scene.hpp"
 
 using namespace std;
 
@@ -126,7 +127,7 @@ class SDL {
 				*/
 
 				if (currentScene < scenes.size()) {
-					scenes[currentScene].render();
+					scenes[currentScene]->render();
 				}
 				SDL_RenderPresent(renderer);
 				fpsTimer = SDL_GetTicks();
@@ -143,7 +144,7 @@ class SDL {
 			return newScene;
 		}
 
-		Scene* setCurrentScene(int n) {
+		Scene* setCurrentScene(unsigned int n) {
 			if (n < scenes.size()) {
 				currentScene = n;
 				return scenes[n];
