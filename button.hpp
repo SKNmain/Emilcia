@@ -6,30 +6,31 @@
 #include <map>
 #include <string>
 #include <SDL2/SDL.h>
-#include "object.hpp"
+//#include "object.hpp"
 #include "image.hpp"
+
 using namespace std;
 
-
+enum Assigment {
+	NONE	= 0,
+	TAKE	= 1,
+	LOUPE	= 2,
+	ADD 	= 3
+};
 
 
 
 class Button : public Image{
 	private:
-		Button() {}
-		/*
-	   -1 - zabierz
-		0 - nic
-		1 - lupa
-		2 - dodaj
-		*/
-		int 		taskFlag;
+		Assigment 	taskFlag;
 	public:
 		bool 		isPressed;
 		
 
 
 		Button() {
+			type = BUTTON;
+			taskFlag = NONE;
 		}
 		/*
 		void setPos(int x, int y) {
@@ -58,6 +59,5 @@ class Button : public Image{
 
 		}
 		~Button() {
-			imagePointer = nullptr;
 		}
 };

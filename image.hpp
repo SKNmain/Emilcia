@@ -12,19 +12,18 @@ using namespace std;
 
 
 class Image : public Object {
-	private:
-		Image() {}
 	public:
 		SDL_Texture*	tex = nullptr;
 		SDL_Rect		src;
-
+		Object 			test;
 		Image() {
 			src.x = 0; src.y = 0; src.w = 0; src.h = 0;
 			dst.x = 0; dst.y = 0; dst.w = 0; dst.h = 0;
+			type = IMAGE;
 		};
 
 		
-		bool loadBMP(string fileName) {
+		bool loadBMP(string fileName, SDL_Renderer* renderer) {
 
 			// zapisywanie do powierzchni
 			
@@ -38,7 +37,7 @@ class Image : public Object {
 
 			// zapisywanie do tekstury
 
-			tex = SDL_CreateTextureFromSurface(render, newSurface);
+			tex = SDL_CreateTextureFromSurface(renderer, newSurface);
 			if (tex == nullptr) {
 				return false;
 			}
@@ -59,20 +58,23 @@ class Image : public Object {
 			dst.y = y;
 		}
 
-		void render(SDL_Renderer* render) {
+		void render(SDL_Renderer* renderer) {
 			if (tex == nullptr) {
 				return;
 			}
 			SDL_RenderCopy(
-				render,
+				renderer,
 				tex,
 				&src,
 				&dst
 			);
 		}
 
+
+
 		~Image() {
 			if (tex != nullptr) {
 				SDL_DestroyTexture(tex);
 			}
 		};
+};

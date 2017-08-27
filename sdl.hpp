@@ -7,17 +7,16 @@
 #include <string>
 #include <SDL2/SDL.h>
 #include "scene.hpp"
-#include "object.hpp"
-#include "image.hpp"
+//#include "object.hpp"
+//#include "image.hpp"
 #include "button.hpp"
+
 using namespace std;
 
 class SDL {
 
 	private:
 		SDL_Event					event;
-		map<string, Image*>			gfx;
-		map<string, Button*>		btn;
 		vector<Scene*>				scenes;
 		unsigned short 				currentScene = 0;
 		unsigned short				fps;
@@ -49,8 +48,8 @@ class SDL {
 
 			// inicjalizacja renderera
 
-			render = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-			if (render == nullptr) {
+			renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+			if (renderer == nullptr) {
 				isError = true;
 				return;
 			}
@@ -63,15 +62,7 @@ class SDL {
 		}
 
 		~SDL() {
-			for (auto it = gfx.begin(); it != gfx.end(); ++it) {
-				delete it->second;
-			}
-			for (auto it = btn.begin(); it != btn.end(); ++it) {
-				delete it->second;
-			}
-			gfx.clear();
-			btn.clear();
-			SDL_DestroyRenderer(render);
+			SDL_DestroyRenderer(renderer);
 			SDL_DestroyWindow(window);
 			SDL_Quit();
 		}
@@ -83,9 +74,9 @@ class SDL {
 			return sdl;
 		}
 
-		bool			isError = false;
-		SDL_Window*		window	= nullptr;
-		SDL_Renderer*	render	= nullptr;
+		bool			isError 	= false;
+		SDL_Window*		window		= nullptr;
+		SDL_Renderer*	renderer 	= nullptr;
 
 		void showError() {
 			cout << "Error: " << SDL_GetError() << endl;
@@ -98,9 +89,9 @@ class SDL {
 
 		// odswiezanie
 		void screenUpdate(SDL_Event* event) {
-			SDL_SetRenderDrawColor(render, 255, 0, 0, 255);
+			SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
 			if (SDL_GetTicks() - fpsTimer > fps) {
-				SDL_RenderClear(render);
+				SDL_RenderClear(renderer);
 				/*
 				//Petla iterujaca po obrazach
 				for (auto it = gfx.begin(); it != gfx.end(); ++it) {
@@ -137,13 +128,27 @@ class SDL {
 				if (currentScene < scenes.size()) {
 					scenes[currentScene].render();
 				}
-				SDL_RenderPresent(render);
+				SDL_RenderPresent(renderer);
 				fpsTimer = SDL_GetTicks();
 			}
 		}
 
 		void setFPS(unsigned int newFPS) {
 			fps =  1.0 / newFPS;
+		}
+
+		Scene* newScene(){
+			Scene* newScene = new Scene(renderer);
+			scenes.push_back(newScene);
+			return newScene;
+		}
+
+		Scene* setCurrentScene(int n) {
+			if (n < scenes.size()) {
+				currentScene = n;
+				return scenes[n];
+			}
+			return nullptr;
 		}
 
 		// wczytywanie map bitowych
@@ -176,7 +181,7 @@ class SDL {
 			SDL_FreeSurface(newSurface);
 			return true;
 		}
-		*/
+		
 		bool makeNewButton(string buttonName, string imgName) {
 
 			// sprawdzam czy juz istnieje
@@ -192,9 +197,9 @@ class SDL {
 			btn[buttonName] = newBtn;
 			return true;
 		}
-
+		*/
 		// JEDYNY SPOSOB ZEBY DOSTAC SIE DO OBRAZOW ! ! !
-
+		/*
 		Image* accesImage(string imageName) {
 			if (gfx.find(imageName) == gfx.end()) {
 				return nullptr;
@@ -210,6 +215,6 @@ class SDL {
 				return btn[btnName];
 			}
 		}
-
+		*/
 
 };

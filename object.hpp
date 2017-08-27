@@ -18,8 +18,8 @@ enum ObjectType {
 
 class Object {
 	public:
-		ObjectType type = NONE;
-		bool enabled = true;
+		ObjectType type;
+		bool enabled;
 		union {
 			struct {
 				int x;
@@ -30,7 +30,12 @@ class Object {
 			SDL_Rect dst;
 		};
 		
-		virtual Object() = 0;
-		virtual ~Object() = 0;
-		virtual void render(SDL_Renderer* renderer) = 0 const;
+		Object() {
+			type = NONE;
+			enabled = true;
+		}
+		~Object();
+		void render(SDL_Renderer* renderer);
+
+
 };

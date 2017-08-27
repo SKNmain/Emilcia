@@ -6,24 +6,28 @@
 #include <map>
 #include <string>
 #include <SDL2/SDL.h>
-#include "object.hpp"
+//#include "object.hpp"
 #include "image.hpp"
+
 using namespace std;
+
+
 
 class Scene {
 	private:
 		Scene() {}
 	public:
 
-		vector<Object*> objects;
-		SDL_Renderer* render = nullptr;
+		vector<Object*> 	objects;
+		SDL_Renderer* 		renderer = nullptr;
+
 
 		Scene(SDL_Renderer* renderPtr) {
-			render = renderPtr;
+			renderer = renderPtr;
 		}
 		
 		~Scene() {
-			render = nullptr;
+			renderer = nullptr;
 			for (int i = 0; i < objects.size(); ++i) {
 				delete objects[i];
 			}
@@ -32,11 +36,12 @@ class Scene {
 		Object* newObject() {
 			Object* newObject = new Object();
 			objects.push_back(newObject);
+			return newObject;
 		}
 
 		void render() {
 			for (int i = 0; i < objects.size(); ++i) {
-				objects[i].render(render);
+				objects[i].render(renderer);
 			}
 		}
 
