@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <fstream>
 #include <stdio.h>
 #include <cstdlib>
 #include <map>
@@ -12,29 +13,26 @@
 using namespace std;
 
 
+
 class Image : public Object {
 	public:
 		SDL_Texture*	tex = nullptr;
 		SDL_Rect		src;
+
 		Image() {
 			src.x = 0; src.y = 0; src.w = 0; src.h = 0;
 			dst.x = 0; dst.y = 0; dst.w = 0; dst.h = 0;
 			type = IMAGE;
-		};
+		}
 
-		
 		bool loadBMP(string fileName, SDL_Renderer* renderer) {
-
 			// zapisywanie do powierzchni
-			
 			SDL_Surface* newSurface = SDL_LoadBMP(fileName.c_str());
 			if (newSurface == nullptr) {
 				return false;
 			}
-
-			src.w = newSurface->w;
-			src.h = newSurface->h;
-
+			dst.w = src.w = newSurface->w;
+			dst.h = src.h = newSurface->h;
 			// zapisywanie do tekstury
 
 			tex = SDL_CreateTextureFromSurface(renderer, newSurface);
@@ -42,8 +40,16 @@ class Image : public Object {
 				return false;
 			}
 			SDL_FreeSurface(newSurface);
+
 			return true;
 		}
+
+		Image(string fileName, SDL_Renderer* renderer) {
+			src.x = 0; src.y = 0; src.w = 0; src.h = 0;
+			dst.x = 0; dst.y = 0; dst.w = 0; dst.h = 0;
+			type = IMAGE;
+			loadBMP(fileName, renderer);
+		};
 
 		// ustawienie wycinka zrodlowej mapy
 		void setClip(int x1, int y1, int x2, int y2) {
@@ -58,7 +64,7 @@ class Image : public Object {
 			dst.y = y;
 		}
 
-		void render(SDL_Renderer* renderer) {
+		void render(SDL_Renderer* renderer) const {
 			if (tex == nullptr) {
 				return;
 			}

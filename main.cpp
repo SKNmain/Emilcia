@@ -7,11 +7,25 @@ using namespace std;
 
 
 int main(int argc, char** argv) {
-	int margin = 16;
 	SDL& sdl = SDL::init();
 	sdl.setFPS(60);
-	
+
+	sdl.addObject(new Button("images/minus.bmp", "images/lupa.bmp", sdl.renderer));
+	((Button*)sdl.getLastObject())->bindFunction([&]() {
+			sdl.setCurrentScene(1);
+	});
+	sdl.newScene()->addObject(sdl.getLastObject());
+
+	sdl.addObject(new Button("images/minus.bmp", "images/plus.bmp", sdl.renderer));
+	((Button*)sdl.getLastObject())->setPos(500, 500);
+	((Button*)sdl.getLastObject())->bindFunction([&]() {
+			sdl.setCurrentScene(0);
+	});
+	sdl.newScene()->addObject(sdl.getLastObject());
+
+	sdl.setCurrentScene(0);
 	for(SDL_Event* event = sdl.eventUpdate(); event->type != SDL_QUIT; sdl.eventUpdate()) {
+		sdl.inputUpdate(event);
 		sdl.screenUpdate(event);
 		//Event handling
 		switch(event->type) {
@@ -31,8 +45,9 @@ int main(int argc, char** argv) {
 
 				break;
 			}
-			
+
 		}
 	}
 	return 0;
+
 }

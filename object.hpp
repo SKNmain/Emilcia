@@ -35,8 +35,12 @@ class Object {
 			type = NONE;
 			enabled = true;
 		}
-		virtual ~Object();
-		virtual void render(SDL_Renderer* renderer);
+		~Object() {
+			enabled = false;
+			type = NONE;	
+		};
+		//virtual ~Object() const;
+		virtual void render(SDL_Renderer* renderer) const = 0;
 
 
 };
