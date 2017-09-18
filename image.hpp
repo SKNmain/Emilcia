@@ -8,6 +8,7 @@
 #include <vector>
 #include <string>
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 #include "object.hpp"
 
 using namespace std;
@@ -27,7 +28,7 @@ class Image : public Object {
 
 		bool loadBMP(string fileName, SDL_Renderer* renderer) {
 			// zapisywanie do powierzchni
-			SDL_Surface* newSurface = SDL_LoadBMP(fileName.c_str());
+			SDL_Surface* newSurface = IMG_Load(fileName.c_str());
 			if (newSurface == nullptr) {
 				return false;
 			}

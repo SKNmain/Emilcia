@@ -1,6 +1,5 @@
 #include "includes.hpp"
 
-//#include <SDL2/SDL_image.h>
 //#include <SDL2/SDL_ttf.h>
 
 using namespace std;
@@ -22,6 +21,7 @@ int main(int argc, char** argv) {
 			sdl.setCurrentScene(0);
 	});
 	sdl.newScene()->addObject(sdl.getLastObject());
+
 
 	sdl.setCurrentScene(0);
 	for(SDL_Event* event = sdl.eventUpdate(); event->type != SDL_QUIT; sdl.eventUpdate()) {

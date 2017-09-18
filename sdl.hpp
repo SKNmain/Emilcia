@@ -7,6 +7,7 @@
 #include <vector>
 #include <string>
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 #include "object.hpp"
 #include "image.hpp"
 #include "button.hpp"
@@ -32,6 +33,11 @@ class SDL {
 				isError = true;
 				return;
 			}
+
+            if ( IMG_Init( ((IMG_INIT_JPG|IMG_INIT_PNG) & (IMG_INIT_JPG|IMG_INIT_PNG)) != (IMG_INIT_JPG|IMG_INIT_PNG) ) ) {
+                isError = true;
+                return;
+            }
 
 			// inicjalizacja okna
 			//-------------------------------------------------
@@ -70,19 +76,21 @@ class SDL {
 			for (unsigned int i = 0; i < objects.size(); ++i) {
 				switch (objects[i]->type) {
 					case (IMAGE): {
-						delete (Image*)objects[i];
+						delete ((Image*)objects[i]);
 						break;
 					}
 					case (TEXT): {
-						//delete (Text*)objects[i];
+						//delete ((Text*)objects[i]);
 						break;
 					}
 					case (BUTTON): {
-						delete (Button*)objects[i];
+						Button* temp = (Button*)objects[i];
+						delete temp;
+						//delete ((Button*)objects[i]);
 						break;
 					}
 					default: {
-						delete objects[i];
+						delete (objects[i]);
 						break;
 					}
 				}
@@ -90,10 +98,11 @@ class SDL {
 
 			SDL_DestroyRenderer(renderer);
 			SDL_DestroyWindow(window);
+			IMG_Quit();
 			SDL_Quit();
 		}
 
-		
+
 	public:
 		static SDL& init() {
 			static SDL sdl;

@@ -8,6 +8,7 @@
 #include <string>
 #include <functional>
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 #include "object.hpp"
 #include "image.hpp"
 
@@ -20,7 +21,7 @@ class Button : public Object{
 		SDL_Texture* loadBMP(SDL_Rect* src, string fileName, SDL_Renderer* renderer) {
 			//zapisywanie do powierzchni
 			SDL_Texture* tex		= nullptr;
-			SDL_Surface* newSurface	= SDL_LoadBMP(fileName.c_str());
+			SDL_Surface* newSurface	= IMG_Load(fileName.c_str());
 			if (newSurface == nullptr) {
 				return nullptr;
 			}
