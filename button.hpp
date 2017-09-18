@@ -50,6 +50,7 @@ class Button : public Object{
 		{
 			type = BUTTON;
 		}
+
 		Button(string fileNameOn, string fileNameOff, SDL_Renderer* renderer)
 		: onPress(nullptr)
 		{
@@ -102,8 +103,6 @@ class Button : public Object{
 				&dst
 			);
 		}
-
-
 
 		~Button() {
 			if (tex_on != nullptr) {

@@ -128,7 +128,7 @@ class SDL {
 		}
 		// odswiezanie
 		void screenUpdate(SDL_Event* event) {
-			SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+			SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
 			if (SDL_GetTicks() - fpsTimer > fps) {
 				SDL_RenderClear(renderer);
 				if (currentScene < scenes.size()) {
