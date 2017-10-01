@@ -49,6 +49,14 @@ int main(int argc, char** argv) {
 	});
 	sdl.getSceneById(1)->addObject(sdl.getLastObject());
 
+	sdl.addObject(new Button("images/cancel.png", "images/cancel.png", sdl.renderer));
+	((Button*)sdl.getLastObject())->setPos(sdl.windowWidth - 102, 2);
+	((Button*)sdl.getLastObject())->bindFunction([&]() {
+		SDL_Delay(160);
+		sdl.setCurrentScene(0);
+	});
+	sdl.getSceneById(1)->addObject(sdl.getLastObject());
+
 	sdl.setCurrentScene(0);
 	for(SDL_Event* event = sdl.eventUpdate(); event->type != SDL_QUIT; sdl.eventUpdate()) {
 		sdl.inputUpdate(event);

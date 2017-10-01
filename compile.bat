@@ -16,6 +16,8 @@ mingw32-g++.exe %FLAGS% %LIB% -o %EXE% %OBJ% %LINKER% 2> linker_out.log || goto 
 
 del /q compile_out.log linker_out.log 2>&1 > nul
 
+C:\Users\gorta\OneDrive\Dokumenty\Emilcia\bin\debug\em.exe
+
 exit
 :error_compile
 type compile_out.log

@@ -44,7 +44,7 @@ class SDL {
 			window = SDL_CreateWindow(
 				"Emilcia",
 				SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-				1024, 768,
+				windowWidth, windowHeight,
 				SDL_WINDOW_SHOWN | SDL_WINDOW_INPUT_FOCUS | SDL_WINDOW_MOUSE_FOCUS
 			);
 			//-------------------------------------------------
@@ -109,9 +109,11 @@ class SDL {
 			return sdl;
 		}
 
-		bool			isError 	= false;
-		SDL_Window*		window		= nullptr;
-		SDL_Renderer*	renderer 	= nullptr;
+		bool			isError 		= false;
+		SDL_Window*		window			= nullptr;
+		SDL_Renderer*	renderer 		= nullptr;
+		int 			windowWidth 	= 1024;
+		int 			windowHeight 	= 768;
 
 		void showError() {
 			cout << "Error: " << SDL_GetError() << endl;
